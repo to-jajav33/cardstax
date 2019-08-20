@@ -1,6 +1,6 @@
 {
   "name": "cardstax",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Making stacks of cards simpler.",
   "main": "index.js",
   "scripts": {
