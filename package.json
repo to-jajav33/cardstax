@@ -4,16 +4,19 @@
   "description": "Making stacks of cards simpler.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commitmsg": "npx commitlint -e $GIT_PARAMS"
   },
   "author": "Jajav33 <to.jajav33@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.16.4"
-  },
-  "dependencies": {
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "husky": "^3.0.4",
+    "lerna": "^3.16.4",
     "verdaccio": "^4.2.1"
   },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/to-jajav33/cardstax.git"
@@ -24,5 +27,11 @@
   "bugs": {
     "url": "https://github.com/to-jajav33/cardstax/issues"
   },
-  "homepage": "https://github.com/to-jajav33/cardstax#readme"
+  "homepage": "https://github.com/to-jajav33/cardstax#readme",
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "private": true
 }
