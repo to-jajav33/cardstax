@@ -1,0 +1,32 @@
+{
+  "name": "cardstaxapp",
+  "version": "0.0.0",
+  "description": "Card Stax App",
+  "keywords": [
+    "CardStax"
+  ],
+  "author": "jajav33 <to.jajav33@gmail.com>",
+  "homepage": "https://github.com/to-jajav33/cardstax#readme",
+  "license": "MIT",
+  "main": "lib/app.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://localhost:4873"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/to-jajav33/cardstax.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/to-jajav33/cardstax/issues"
+  }
+}

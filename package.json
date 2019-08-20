@@ -1,0 +1,28 @@
+{
+  "name": "cardstax",
+  "version": "0.0.1",
+  "description": "Making stacks of cards simpler.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jajav33 <to.jajav33@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "dependencies": {
+    "verdaccio": "^4.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/to-jajav33/cardstax.git"
+  },
+  "keywords": [
+    "CardStax"
+  ],
+  "bugs": {
+    "url": "https://github.com/to-jajav33/cardstax/issues"
+  },
+  "homepage": "https://github.com/to-jajav33/cardstax#readme"
+}
