@@ -1,4 +1,4 @@
-# `app`
+# `@cardstax/app`
 
 > TODO: description
 
