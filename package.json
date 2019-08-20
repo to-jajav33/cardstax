@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "commitmsg": "npx commitlint -e $GIT_PARAMS",
-    "git:commit": "npx git-cz"
+    "git:commit": "npx git-cz",
+    "publish:alpha": "npx lerna publish --canary --preid alpha"
   },
   "author": "Jajav33 <to.jajav33@gmail.com>",
   "license": "MIT",
