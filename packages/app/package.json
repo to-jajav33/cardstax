@@ -8,13 +8,13 @@
   "author": "jajav33 <to.jajav33@gmail.com>",
   "homepage": "https://github.com/to-jajav33/cardstax#readme",
   "license": "MIT",
-  "main": "lib/app.js",
+  "main": "dist/index.html",
   "directories": {
-    "lib": "lib",
+    "dist": "dist",
     "test": "__tests__/app.test.js -w"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "publishConfig": {
     "registry": "http://localhost:4873"
@@ -28,7 +28,11 @@
   },
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.vue src",
+    "build": "npm run lint:fix && npm run test && npm run build:clean && npm run build:quasar",
+    "build:quasar": "npx quasar build",
+    "build:clean": "rimraf ./dist",
+    "lint": "npx eslint --ext .js,.vue src",
+    "lint:fix": "npx eslint --fix --ext .js,.vue src",
     "test": "npm run test:single && npm run test:coverage",
     "test:coverage": "nyc check-coverage --branches 100 --functions 100 --lines 100 --statements 100",
     "test:mocha": "npx mocha ./test/*.test.js",
@@ -55,6 +59,7 @@
     "husky": "^3.0.4",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
+    "rimraf": "^3.0.0",
     "strip-ansi": "^3.0.1"
   },
   "engines": {

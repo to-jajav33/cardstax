@@ -1,7 +1,9 @@
 import * as types from "../types";
 
 const actions = {
-  [types.loadLastSavedProject]: ({ state, commit }, payload) => {}
+  [types.loadLastSavedProject]: ({ state, commit }, payload) => {
+    console.log(state, commit, payload);
+  }
   // [types.registerComponent]: ({ state, commit }, payload) => {
   //   const { componentName } = payload;
   //   if (!state.componentMap[componentName]) {
