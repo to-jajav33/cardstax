@@ -1,6 +1,6 @@
 # `@cardstax/app`
 
-> TODO: description
+> TODO: add description.
 
 ## Usage
 
