@@ -11,7 +11,7 @@
   "main": "lib/app.js",
   "directories": {
     "lib": "lib",
-    "test": "__tests__"
+    "test": "mocha __tests__/app.test.js -w"
   },
   "files": [
     "lib"
@@ -23,10 +23,49 @@
     "type": "git",
     "url": "git+https://github.com/to-jajav33/cardstax.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/to-jajav33/cardstax/issues"
+  },
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "test": "npx mocha ./test/*.test.js"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "axios": "^0.18.1",
+    "localforage": "^1.7.3",
+    "mousetrap": "^1.6.3",
+    "quasar": "^1.0.0-beta.0",
+    "vue-draggable-resizable": "^2.0.0-rc2",
+    "vue-i18n": "^8.0.0",
+    "vuedraggable": "^2.23.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0-beta.0",
+    "@vue/eslint-config-prettier": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^5.10.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-vue": "^5.0.0",
+    "husky": "^3.0.4",
+    "mocha": "^6.2.0",
+    "strip-ansi": "^3.0.1"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "browserslist": [
+    "last 1 version, not dead, ie >= 11"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm test"
+    }
   }
 }
