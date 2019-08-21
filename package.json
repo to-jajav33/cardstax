@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "git:commit": "npx git-cz",
-    "publish:alpha": "npx lerna publish --canary --preid alpha"
+    "publish:alpha": "npx lerna publish --canary --preid alpha",
+
+    "precommit": "npx lerna run test",
+    "commitmsg": "npx commitlint -E HUSKY_GIT_PARAMS",
+    "prepush": "npx lerna run test"
   },
   "author": "Jajav33 <to.jajav33@gmail.com>",
   "license": "MIT",
