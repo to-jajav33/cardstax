@@ -6,11 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "git:commit": "npx git-cz",
-    "publish:alpha": "npx lerna publish --canary --preid alpha",
-
-    "precommit": "npx lerna run test",
-    "commitmsg": "npx commitlint -E HUSKY_GIT_PARAMS",
-    "prepush": "npx lerna run test"
+    "publish:alpha": "npx lerna publish --canary --preid alpha"
   },
   "author": "Jajav33 <to.jajav33@gmail.com>",
   "license": "MIT",
@@ -23,6 +19,7 @@
     "husky": "^3.0.4",
     "lerna": "^3.16.4",
     "mocha": "^6.2.0",
+    "semantic-release": "^15.13.21",
     "verdaccio": "^4.2.1"
   },
   "repository": {
@@ -50,7 +47,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npx lerna run test",
-      "commit-msg": "echo commiting i think",
+      "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "npx lerna run test"
     }
   }

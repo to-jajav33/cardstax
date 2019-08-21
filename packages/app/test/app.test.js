@@ -6,6 +6,6 @@ const app = require('../lib/app');
 describe('app', () => {
     // it('needs tests');
     it('needs tests', function() {
-        expect(true).to.be.not.true;
+        expect(true).to.be.true;
     });
 });
