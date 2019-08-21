@@ -22,7 +22,6 @@
     "mocha": "^6.2.0",
     "verdaccio": "^4.2.1"
   },
-  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/to-jajav33/cardstax.git"
