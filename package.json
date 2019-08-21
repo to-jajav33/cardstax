@@ -49,7 +49,7 @@
     "hooks": {
       "pre-commit": "npx lerna run test",
       "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "npm test"
+      "pre-push": "npx lerna run test"
     }
   }
 }
