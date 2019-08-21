@@ -11,7 +11,7 @@
   "main": "lib/app.js",
   "directories": {
     "lib": "lib",
-    "test": "mocha __tests__/app.test.js -w"
+    "test": "__tests__/app.test.js -w"
   },
   "files": [
     "lib"
@@ -29,7 +29,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue src",
-    "test": "npx mocha ./test/*.test.js"
+    "test": "npx mocha ./test/*.test.js",
+    "test:single": "npx nyc --reporter=html -x *.test.js npm run test"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -51,6 +52,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "husky": "^3.0.4",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
     "strip-ansi": "^3.0.1"
   },
   "engines": {
