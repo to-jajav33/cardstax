@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx lerna run test",
+    "test:coverage": "npx lerna run test:coverage",
+    "test:mocha": "npx lerna run test:mocha",
     "test:single": "npx lerna run test:single",
     "git:commit": "npx git-cz",
     "publish:alpha": "npx lerna publish --canary --preid alpha"
