@@ -50,7 +50,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npx lerna run test",
-      "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS",
+      "commit-msg": "echo commiting i think",
       "pre-push": "npx lerna run test"
     }
   }
