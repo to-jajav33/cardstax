@@ -44,5 +44,12 @@
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lerna run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm test"
+    }
   }
 }
