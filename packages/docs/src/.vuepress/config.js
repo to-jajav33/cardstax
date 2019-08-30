@@ -4,14 +4,16 @@ module.exports = {
     description: "A demo documentation using VuePress",
     themeConfig:{
         nav: [
-            { text: 'GUIDE', link: '/guide/' },
+            { text: 'DEV', link: '/dev/' },
         ],
         sidebar: [
             {
-                title: 'API Guide',
+                title: 'DEV App Docs',
                 collapsable: false,
                 children: [
-                    ['/guide/', 'Dev Guide'],
+                    ['/dev/app/docs/', 'Dev Docs'],
+                    ['/dev/app/contribute/', 'Dev Contribute'],
+                    ['/dev/app/design/', 'App Design'],
                 ]
             }
             ]
