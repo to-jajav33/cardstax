@@ -1,11 +1,11 @@
-'use strict';
-var expect = require('chai').expect;
+"use strict";
+var expect = require("chai").expect;
 
-const app = require('../lib/app');
+const app = require("../dist/app");
 
-describe('app', () => {
-    // it('needs tests');
-    it('needs tests', function() {
-        expect(true).to.be.true;
-    });
+describe("app", () => {
+  // it('needs tests');
+  it("needs tests", function() {
+    expect(true).to.be.true;
+  });
 });

@@ -11,7 +11,7 @@
   "main": "dist/index.html",
   "directories": {
     "dist": "dist",
-    "test": "__tests__/app.test.js -w"
+    "test": "test/app.test.js -w"
   },
   "files": [
     "dist"
