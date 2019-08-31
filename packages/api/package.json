@@ -1,0 +1,66 @@
+{
+  "name": "@cardstax/api",
+  "version": "0.0.1",
+  "description": "API for cardstax app to connect to.",
+  "author": "jajav33 <to.jajav33@gmail.com>",
+  "homepage": "https://github.com/to-jajav33/cardstax/tree/master/packages/api#readme",
+  "license": "UNLICENSED",
+  "main": "dist/api.js",
+  "directories": {
+    "lib": "dist",
+    "test": "test"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "http://localhost:4873/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/to-jajav33/cardstax.git"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rimraf ./dist",
+    "compile": "tsc -p tsconfig.build.json",
+    "docs": "npm run docs:clean && npm run docs:build",
+    "docs:build": "npx documentation build ./src/** -f md -o ../docs/src/guide/README.md",
+    "docs:clean": "rimraf ../docs/src/guide/ && mkdir ../docs/src/guide/",
+    "docs:lint": "npx documentation lint ./src/pages/Index.vue",
+    "start:node": "node ./dist/api.js 3000 http://localhost:3000 watch",
+    "start": "npm run clean && npm run build && npm run start:node",
+    "watch": "npx nodemon --watch dev -e ts --exec \"npm run start\"",
+    "test": "npm run test:single && npm run test:coverage",
+    "test:coverage": "nyc check-coverage --branches 100 --functions 100 --lines 100 --statements 100",
+    "test:mocha": "npx mocha ./test/*.test.js",
+    "test:single": "npx nyc --reporter=html -x *.test.js npm run test:mocha"
+  },
+  "bugs": {
+    "url": "https://github.com/to-jajav33/cardstax/issues"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "documentation": "^12.1.1",
+    "husky": "^3.0.4",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && npm run test:single && npm run test:coverage",
+      "commit-msg": "npx commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "npm run test"
+    }
+  }
+}
