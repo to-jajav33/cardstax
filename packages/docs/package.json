@@ -8,7 +8,7 @@
   "main": "dist/index.html",
   "directories": {
     "lib": "dist",
-    "test": "__tests__"
+    "test": "test"
   },
   "files": [
     "dist"
