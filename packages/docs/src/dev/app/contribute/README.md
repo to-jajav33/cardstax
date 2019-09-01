@@ -57,12 +57,33 @@ In order to save space on a repo, npm allows you to not save all the addons in y
 
 Run the following command:
 
-**npm install**
+	> npm install
 
   
 
 ## 4. Work on the expected repo
 
+Before working on a project you need to do a two steps:
+
+1. Run [Verdaccio](https://github.com/verdaccio/verdaccio) from the root of the repo
+
+		> verdaccio
+
+    1. If this is the first time trying to run verdaccio, you might need to set it up.
+
+			> npm set registry http://localhost:4873/
+
+			> NPM_CONFIG_REGISTRY=http://localhost:4873
+
+			> npm adduser --registry http://localhost:4873
+
+			> verdaccio
+
+2. **cd** into package to be worked on and run npm install to get the latest packages.
+
+		> cd packages/packageName
+
+		> npm install
 
 
 ### - **packages/docs/**
@@ -75,7 +96,7 @@ Documentation for anything game related. Can even become the game site possibly.
 
   
 
-### - **packages/app**
+### - **packages/app/**
 
 #### App repo - Quasar project.
 
@@ -85,7 +106,7 @@ App development that we want in the app should be done here. If you want to expe
 
   
 
-### - **packages/experimental**
+### - **packages/experimental/**
 
 #### Experiment with anything - Quasar Project
 
@@ -124,7 +145,7 @@ Work on the part of the game you need to work on.
 
 #### 2.1 To test the app locally
 
-> npx quasar dev
+> \> npx quasar dev
 
   
 
@@ -141,9 +162,11 @@ If proper JSDoc is used, you can run `npm run docs` to generate docs into the pa
 If more info is needed for guidance on the app or development, add/create documentation using packages/docs. This uses Vuepress and more info can be found [here](https://vuepress.vuejs.org/guide/getting-started.html#inside-an-existing-project).
 
 
-> npm run docs:dev // runs a server to test
+	// runs a server to test
+	> npm run docs:dev
 
-> npm run docs:build // generates docs in packages/docs/dist/ folder
+	// generates docs in packages/docs/dist/ folder
+	> npm run docs:build
 
 
   
@@ -172,17 +195,12 @@ Then open a terminal
 
 3. Run the following command
 
-  
+		> npm run git:commit
 
-> npm run git:commit
 
-  
+	This will prompt you for some questions. Answer them accordingly.
 
-This will prompt you for some questions. Answer them accordingly.
-
-  
-
-When asked for scope, look at the name of the package you are committing to. **@cardstax/docs**, **@cardstax/experimental**, or **@cardstax/app**
+	When asked for scope, look at the name of the package you are committing to. **@cardstax/docs**, **@cardstax/experimental**, or **@cardstax/app**
 
   
 
