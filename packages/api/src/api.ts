@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import * as requestPromise from 'request-promise';
 import * as http from 'http';
+import CSGameCrafterAPI from './CSGameCrafterAPI';
 
 /*
  * Questions:
@@ -25,9 +25,20 @@ export class api {
 	private __PORT_NUMBER : Number;
 	private __expressServer : http.Server;
 	private __expressApp : express.Application;
+	private __api : CSGameCrafterAPI;
 
 	constructor () {
-		this.__PORT_NUMBER = !isNaN(parseInt(process.argv[2])) ? parseInt(process.argv[2]) : 3000;
+		let PORT_NUMBER : Number;
+		if (!isNaN(parseInt(process.argv[2]))) {
+			PORT_NUMBER = parseInt(process.argv[2]);
+		} else if (!isNaN(parseInt(process.env.CARDSTAX_NODE_PORT_NUMBER))) {
+			PORT_NUMBER = parseInt(process.env.CARDSTAX_NODE_PORT_NUMBER);
+		} else {
+			PORT_NUMBER = 3000;
+		}
+		this.__PORT_NUMBER = PORT_NUMBER;
+
+		this.__api = new CSGameCrafterAPI();
 	}
 
 	private __setupEndPoints () : express.Application {
@@ -39,26 +50,54 @@ export class api {
 			// user the library to read req.body
 			app.use(bodyParser.json());
 			app.use(bodyParser.urlencoded({extended: false}));
+			
+			// req.body or req.params
+
+			// log in
+			app.post('/api/session/logIn/', async (req, res) => {
+				const userCreds = {
+					username: req.body.username,
+					password: req.body.password
+				};
+
+				let result = await this.__api.logIn(userCreds);
 	
-			app.get('/fake-get', (req, res) => {
-				const address = req.params.address;
-	
-				res.json({
-					note: 'Success',
-					address
-				});
+				res.json(result);
 			});
+
+			app.post('/api/session/logOut/', async (req, res) => {
+				let result = await this.__api.logOut();
+
+				res.json(result);
+			});
+
+			// app.post('/api/create/deck/', (req, res) => {
+			// 	const deckInfo = {
+			// 		name: req.params.name
+			// 	};
+	
+			// 	res.json({ note: `Success: ${deckInfo}.`, success: true });
+			// });
+	
+			// app.get('/fake-get', (req, res) => {
+			// 	const address = req.params.address;
+	
+			// 	res.json({
+			// 		note: 'Success',
+			// 		address
+			// 	});
+			// });
 	
 			// add a new transaction
-			app.post('/fake-post-easy', (req, res) => {
-				const outInfo = {
-					value: req.body.value,
-				};
+			// app.post('/fake-post-easy', (req, res) => {
+			// 	const outInfo = {
+			// 		value: req.body.value,
+			// 	};
 	
-				res.json({ note: `Success: ${outInfo}.` });
-			});
+			// 	res.json({ note: `Success: ${outInfo}.` });
+			// });
 	
-			app.post('/fake-post-promises', (req, res) => {
+			// app.post('/fake-post-promises', (req, res) => {
 				// const transaction = {
 				// 	value: req.body.value,
 				// 	sender: req.body.sender,
@@ -83,7 +122,7 @@ export class api {
 				// 			note: 'Tranasaction created and broadcasted successfully.'
 				// 		})
 				// 	});
-			});
+			// });
 		}
 
 		return this.__expressApp;
