@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as requestPromise from 'request-promise';
+import * as http from 'http';
 
 /*
  * Questions:
@@ -11,80 +12,170 @@ import * as requestPromise from 'request-promise';
  5. should I optimize isChainValid to take in an object instead of requiring to clone a BlockChain to use isChainValid?
  */
 
+export const __isWatching = process.argv[4] === 'watch';
+
+interface ICSResponse {
+	note: string,
+	success: boolean,
+	e ?: Error,
+	['props'] ?: any
+}
+
 export class api {
 	private __PORT_NUMBER : Number;
-	// private __nodeURLs : Array<string>;
-	// private __currentNodeUrl : string;
+	private __expressServer : http.Server;
+	private __expressApp : express.Application;
 
 	constructor () {
 		this.__PORT_NUMBER = !isNaN(parseInt(process.argv[2])) ? parseInt(process.argv[2]) : 3000;
-
-		// this.__currentNodeUrl = process.argv[3]; // <----- can get values form command line like this.
-		// this.__nodeURLs = []; // <--- not needed, just to show a post example with lots of promises.
-
-		this.__setupEndPoints();
 	}
 
-	private __setupEndPoints () {
-		// start app
-		const app = express();
-
-		// user the library to read req.body
-		app.use(bodyParser.json());
-		app.use(bodyParser.urlencoded({extended: false}));
-
-		app.get('/fake-get', (req, res) => {
-			const address = req.params.address;
-
-			res.json({
-				note: 'Success',
-				address
+	private __setupEndPoints () : express.Application {
+		if (!this.__expressServer) {
+			// start app
+			this.__expressApp = express() as express.Application;
+			const app = this.__expressApp;
+	
+			// user the library to read req.body
+			app.use(bodyParser.json());
+			app.use(bodyParser.urlencoded({extended: false}));
+	
+			app.get('/fake-get', (req, res) => {
+				const address = req.params.address;
+	
+				res.json({
+					note: 'Success',
+					address
+				});
 			});
-		});
+	
+			// add a new transaction
+			app.post('/fake-post-easy', (req, res) => {
+				const outInfo = {
+					value: req.body.value,
+				};
+	
+				res.json({ note: `Success: ${outInfo}.` });
+			});
+	
+			app.post('/fake-post-promises', (req, res) => {
+				// const transaction = {
+				// 	value: req.body.value,
+				// 	sender: req.body.sender,
+				// 	recipient: req.body.recipient
+				// };
+	
+				// const allPromises = [];
+				// this.__nodeURLs.forEach((networkNodeUrl) => {
+				// 	const requestOptions = {
+				// 		uri: `${networkNodeUrl}/transaction`,
+				// 		method: 'POST',
+				// 		body: transaction,
+				// 		json: true
+				// 	};
+	
+				// 	allPromises.push(requestPromise(requestOptions));
+				// });
+	
+				// Promise.all(allPromises)
+				// 	.then((data) => {
+				// 		res.json({
+				// 			note: 'Tranasaction created and broadcasted successfully.'
+				// 		})
+				// 	});
+			});
+		}
 
-		// add a new transaction
-		app.post('/fake-post-easy', (req, res) => {
-			const outInfo = {
-				value: req.body.value,
-			};
+		return this.__expressApp;
+	}
 
-			res.json({ note: `Success: ${outInfo}.` });
-		});
+	public async start () : Promise<ICSResponse> {
+		try {
+			if (!this.__expressServer) {
+				let app : express.Application = this.__setupEndPoints();
+				
+				const note = `Listening to port ${this.__PORT_NUMBER}`;
+				let success = false;
+				let result : ICSResponse = await new Promise ((paramResolve, paramReject) => {
+					try {
+						this.__expressServer = app.listen(this.__PORT_NUMBER, () => {
+							if (__isWatching) console.log(note);
+							success = true;
+							paramResolve ({
+								note,
+								success
+							});
+						});
+					} catch (e) {
+						success = false;
+						paramReject({
+							note: 'Failed to start',
+							success
+						});
+					}
+				});
 
-		app.post('/fake-post-promises', (req, res) => {
-			// const transaction = {
-			// 	value: req.body.value,
-			// 	sender: req.body.sender,
-			// 	recipient: req.body.recipient
-			// };
+				if (result.success) {
+					return result;
+				} else {
+					throw(result.note);
+				}
+			} else {
+				throw('Server already created.');
+			}
+		} catch (e) {
+			throw({
+				note: `Error: ${e.message || e.note}`,
+				error: e,
+				success: false
+			});
+		}
+	}
 
-			// const allPromises = [];
-			// this.__nodeURLs.forEach((networkNodeUrl) => {
-			// 	const requestOptions = {
-			// 		uri: `${networkNodeUrl}/transaction`,
-			// 		method: 'POST',
-			// 		body: transaction,
-			// 		json: true
-			// 	};
+	public async stop () : Promise<ICSResponse> {
+		try {
+			if (this.__expressServer) {
+				let success = false;
+				let result : ICSResponse = await new Promise((paramResolve, paramReject) => {
+					try {
+						this.__expressServer.close(() => {
+							this.__expressServer = null;
+							success = true;
+							paramResolve({
+								note: 'Closed successfully',
+								success
+							});
+						});
+					} catch (e) {
+						paramReject({
+							note: 'Failed to close.',
+							success
+						});
+					}
+				});
 
-			// 	allPromises.push(requestPromise(requestOptions));
-			// });
-
-			// Promise.all(allPromises)
-			// 	.then((data) => {
-			// 		res.json({
-			// 			note: 'Tranasaction created and broadcasted successfully.'
-			// 		})
-			// 	});
-		});
-
-		app.listen(this.__PORT_NUMBER, () => {
-			console.log(`Listening to port ${this.__PORT_NUMBER}`);
-		});
+				if (result.success) {
+					return result;
+				} else {
+					throw(result.note);
+				}
+			} else {
+				throw('Server is not running');
+			}
+		} catch (e) {
+			throw({
+				note: `Error: ${e.message || e.note}`,
+				success: false,
+				error: e
+			} as ICSResponse);
+		}
 	}
 }
 
+export default api;
 
-if (process.argv[4] === 'watch') {
+
+if (__isWatching) {
 	const runAPI = new api();
+	runAPI.start();
 }
