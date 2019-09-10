@@ -38,7 +38,6 @@ export class CSGameCrafterAPISession extends EventEmitter {
 	private __prefix : string;
 	private __privateKey : string;
 	private __publicKey : string;
-	private __currentSession : ICSGCSession;
 
 	constructor (options : ICSGCSessionOptions) {
 		super();
@@ -46,7 +45,6 @@ export class CSGameCrafterAPISession extends EventEmitter {
 		this.__publicKey = options.publKey;
 		this.__privateKey = options.privKey;
 		this.__prefix = options.prefixUri;
-		this.__currentSession = options.session;
 	}
 
 	get prefix () : string {
@@ -54,42 +52,32 @@ export class CSGameCrafterAPISession extends EventEmitter {
 	}
 
 	public async logIn (options : ICSGCLogInOpts) : Promise<ICSGCSession> {
-		if (!this.__currentSession) {
-			const loginOptions = {
-				uri: `${this.__prefix}/session`,
-				method: 'POST',
-				body: {
-					username: options.username,
-					password: options.password,
-					api_key_id: this.__publicKey
-				},
-				json: true
-			};
+		const loginOptions = {
+			uri: `${this.__prefix}/session`,
+			method: 'POST',
+			body: {
+				username: options.username,
+				password: options.password,
+				api_key_id: this.__publicKey
+			},
+			json: true
+		};
 
-			let resp = await requestPromise(loginOptions);
-			this.__currentSession = resp;
-		}
+		let resp = await requestPromise(loginOptions);
 
-		return this.__currentSession;
+		return resp;
 	}
 
-	public async logOut () : Promise<ICSGCLogOutResult> {
+	public async logOut (sessionID : string) : Promise<ICSGCLogOutResult> {
 		let result : ICSGCLogOutResult;
-		if (this.__currentSession) {
-			const loginOptions = {
-				uri: `${this.__prefix}/session/${this.__currentSession.id}`,
-				method: 'DELETE',
-				body: {},
-				json: true
-			};
+		const loginOptions = {
+			uri: `${this.__prefix}/session/${sessionID}`,
+			method: 'DELETE',
+			body: {},
+			json: true
+		};
 
-			result = await requestPromise(loginOptions);
-		} else {
-			result = {
-				success: true,
-				note: 'user already logged out'
-			};
-		}
+		result = await requestPromise(loginOptions);
 
 		return result;
 	}
