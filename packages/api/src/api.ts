@@ -65,19 +65,13 @@ export class api {
 				res.json(result);
 			});
 
-			app.post('/api/session/logOut/', async (req, res) => {
-				let result = await this.__api.logOut();
+			app.delete('/api/session/logOut/', async (req, res) => {
+				let { sessionID } = req.body;
+				let result = await this.__api.logOut(sessionID);
 
 				res.json(result);
 			});
 
-			// app.post('/api/create/deck/', (req, res) => {
-			// 	const deckInfo = {
-			// 		name: req.params.name
-			// 	};
-	
-			// 	res.json({ note: `Success: ${deckInfo}.`, success: true });
-			// });
 	
 			// app.get('/fake-get', (req, res) => {
 			// 	const address = req.params.address;
@@ -95,33 +89,6 @@ export class api {
 			// 	};
 	
 			// 	res.json({ note: `Success: ${outInfo}.` });
-			// });
-	
-			// app.post('/fake-post-promises', (req, res) => {
-				// const transaction = {
-				// 	value: req.body.value,
-				// 	sender: req.body.sender,
-				// 	recipient: req.body.recipient
-				// };
-	
-				// const allPromises = [];
-				// this.__nodeURLs.forEach((networkNodeUrl) => {
-				// 	const requestOptions = {
-				// 		uri: `${networkNodeUrl}/transaction`,
-				// 		method: 'POST',
-				// 		body: transaction,
-				// 		json: true
-				// 	};
-	
-				// 	allPromises.push(requestPromise(requestOptions));
-				// });
-	
-				// Promise.all(allPromises)
-				// 	.then((data) => {
-				// 		res.json({
-				// 			note: 'Tranasaction created and broadcasted successfully.'
-				// 		})
-				// 	});
 			// });
 		}
 
