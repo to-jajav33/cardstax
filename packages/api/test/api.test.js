@@ -13,6 +13,7 @@ promiseFinally.shim();
 
 const api = require('../dist/api').api;
 const apiInstance = new api();
+let sessionID;
 
 class APITest {
     constructor () {
@@ -36,6 +37,7 @@ class APITest {
                 let resp = await requestPromise(requestInfo);
 
                 expect(resp.result).has.property('id');
+                sessionID = resp.result.id;
                 expect(resp.result).has.property('object_type', 'session');
                 expect(resp.result).has.property('object_name', 'Session');
                 expect(resp.result).has.property('user_id');
@@ -48,11 +50,7 @@ class APITest {
             it('should return success = 1', async function () {
                 let requestInfo = {
                     uri: `http://localhost:${process.env.CARDSTAX_NODE_PORT_NUMBER}/api/session/logOut`,
-                    method: 'POST',
-                    body: {
-                        username: process.env.GAME_CRAFTER_LOG_IN_USERNAME,
-                        password: process.env.GAME_CRAFTER_LOG_IN_PASSWORD
-                    },
+                    method: 'DELETE',
                     json: true
                 };
 
@@ -106,7 +104,7 @@ class APITest {
 const testApi = new APITest();
 testApi.start();
 testApi.logIn();
-testApi.logOut();
+testApi.logOut(sessionID);
 
 // describe('api', () => {
 //     // it('needs tests');
