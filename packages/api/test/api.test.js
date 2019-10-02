@@ -16,7 +16,15 @@ const apiInstance = new api();
 
 class APITest {
     constructor () {
-        this.__prefixURIAPI = `http://localhost:${process.env.CARDSTAX_NODE_PORT_NUMBER}/api`;
+		let PORT_NUMBER;
+		if (!isNaN(parseInt(process.argv[2]))) {
+			PORT_NUMBER = parseInt(process.argv[2]);
+		} else if (!isNaN(parseInt(process.env.CARDSTAX_NODE_PORT_NUMBER))) {
+			PORT_NUMBER = parseInt(process.env.CARDSTAX_NODE_PORT_NUMBER);
+		} else {
+			PORT_NUMBER = 3000;
+		}
+        this.__prefixURIAPI = `http://localhost:${PORT_NUMBER}/api`;
     }
 
     logIn () {
@@ -44,10 +52,11 @@ class APITest {
     }
 
     logOut () {
+        let uri = `${this.__prefixURIAPI}/session/logOut`;
         describe('log out', () => {
             it('should return success = 1', async function () {
                 let requestInfo = {
-                    uri: `http://localhost:${process.env.CARDSTAX_NODE_PORT_NUMBER}/api/session/logOut`,
+                    uri: uri,
                     method: 'POST',
                     body: {
                         username: process.env.GAME_CRAFTER_LOG_IN_USERNAME,
