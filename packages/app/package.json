@@ -28,7 +28,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "npm run lint:fix && npm run test && npm run build:clean && npm run build:quasar",
+    "build": "npm run lint:fix && npm run build:clean && npm run build:quasar && npm run test",
     "build:quasar": "npx quasar build",
     "build:clean": "rimraf ./dist",
     "docs": "npm run docs:clean && npm run docs:build",
