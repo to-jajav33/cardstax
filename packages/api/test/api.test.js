@@ -46,10 +46,11 @@ class APITest {
     }
 
     logOut () {
+        let uri = `${this.__prefixURIAPI}/session/logOut`
         describe('log out', () => {
             it('should return success = 1', async function () {
                 let requestInfo = {
-                    uri: `http://localhost:${process.env.CARDSTAX_NODE_PORT_NUMBER}/api/session/logOut`,
+                    uri,
                     method: 'DELETE',
                     json: true
                 };
@@ -57,6 +58,23 @@ class APITest {
                 let resp = await requestPromise(requestInfo);
 
                 expect(resp.result).has.property('success', 1);
+            });
+        });
+    }
+
+    me () {
+        let uri = `${this.__prefixURIAPI}/figma/me`
+        describe('figma/me', () => {
+            it('should return handle', async function() {
+                let requestInfo = {
+                    uri,
+                    method: 'GET',
+                    json: true
+                };
+
+                let resp = await requestPromise(requestInfo);
+
+                expect(resp).has.property('handle');
             });
         });
     }
@@ -105,6 +123,7 @@ const testApi = new APITest();
 testApi.start();
 testApi.logIn();
 testApi.logOut(sessionID);
+testApi.me();
 
 // describe('api', () => {
 //     // it('needs tests');

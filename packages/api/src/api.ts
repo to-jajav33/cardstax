@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import CSGameCrafterAPI from './CSGameCrafterAPI';
+import CSFigmaAPI from './CSFigmaAPI';
 
 /*
  * Questions:
@@ -25,7 +26,8 @@ export class api {
 	private __PORT_NUMBER : Number;
 	private __expressServer : http.Server;
 	private __expressApp : express.Application;
-	private __api : CSGameCrafterAPI;
+	private __GameCrafterAPI : CSGameCrafterAPI;
+	private __FigmaAPI : CSFigmaAPI;
 
 	constructor () {
 		let PORT_NUMBER : Number;
@@ -38,7 +40,8 @@ export class api {
 		}
 		this.__PORT_NUMBER = PORT_NUMBER;
 
-		this.__api = new CSGameCrafterAPI();
+		this.__GameCrafterAPI = new CSGameCrafterAPI();
+		this.__FigmaAPI = new CSFigmaAPI();
 	}
 
 	private __setupEndPoints () : express.Application {
@@ -60,15 +63,21 @@ export class api {
 					password: req.body.password
 				};
 
-				let result = await this.__api.logIn(userCreds);
+				let result = await this.__GameCrafterAPI.logIn(userCreds);
 	
 				res.json(result);
 			});
 
 			app.delete('/api/session/logOut/', async (req, res) => {
 				let { sessionID } = req.body;
-				let result = await this.__api.logOut(sessionID);
+				let result = await this.__GameCrafterAPI.logOut(sessionID);
 
+				res.json(result);
+			});
+
+			app.get('/api/figma/me/', async (req, res) => {
+				let result = await this.__FigmaAPI.me();
+				
 				res.json(result);
 			});
 
