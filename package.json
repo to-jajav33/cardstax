@@ -4,7 +4,7 @@
   "description": "Making stacks of cards simpler.",
   "main": "index.js",
   "scripts": {
-    "build": "npx lerna run bulid",
+    "build": "npx lerna run build",
     "test": "npx lerna run test",
     "test:coverage": "npx lerna run test:coverage",
     "test:mocha": "npx lerna run test:mocha",
