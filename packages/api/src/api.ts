@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import CSGameCrafterAPI from './CSGameCrafterAPI';
+import CSFigmaAPI from './CSFigmaAPI';
 
 /*
  * Questions:
@@ -14,7 +15,16 @@ import CSGameCrafterAPI from './CSGameCrafterAPI';
 
 export const __isWatching = process.argv[4] === 'watch';
 
-interface ICSResponse {
+export interface ICSRequestOptions {
+	uri: any,
+	method ?: string,
+	headers ?: any
+	qs ?: any,
+	body ?: any,
+	json ?: boolean,
+}
+
+export interface ICSResponse {
 	note: string,
 	success: boolean,
 	e ?: Error,
@@ -25,7 +35,8 @@ export class api {
 	private __PORT_NUMBER : Number;
 	private __expressServer : http.Server;
 	private __expressApp : express.Application;
-	private __api : CSGameCrafterAPI;
+	private __GameCrafterAPI : CSGameCrafterAPI;
+	private __FigmaAPI : CSFigmaAPI;
 
 	constructor () {
 		let PORT_NUMBER : Number;
@@ -38,7 +49,8 @@ export class api {
 		}
 		this.__PORT_NUMBER = PORT_NUMBER;
 
-		this.__api = new CSGameCrafterAPI();
+		this.__GameCrafterAPI = new CSGameCrafterAPI();
+		this.__FigmaAPI = new CSFigmaAPI();
 	}
 
 	private __setupEndPoints () : express.Application {
@@ -60,19 +72,142 @@ export class api {
 					password: req.body.password
 				};
 
-				let result = await this.__api.logIn(userCreds);
+				let result = await this.__GameCrafterAPI.logIn(userCreds);
 	
 				res.json(result);
 			});
 
 			app.delete('/api/session/logOut/', async (req, res) => {
 				let { sessionID } = req.body;
-				let result = await this.__api.logOut(sessionID);
+				let result = await this.__GameCrafterAPI.logOut(sessionID);
 
 				res.json(result);
 			});
 
+			app.get('/api/figma/me/', async (req, res) => {
+				let result = await this.__FigmaAPI.me();
+				
+				res.json(result);
+			});
+
 	
+			app.get('/api/figma/file/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.file(key);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/fileNodes/', async (req, res) => {
+				const key = req.query.key;
+				const ids = req.query.ids;
+
+				let result = await this.__FigmaAPI.fileNodes(key, ids);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/images/', async (req, res) => {
+				const key = req.query.key;
+				const ids = req.query.ids;
+				const version = req.query.version;
+				const scale = req.query.scale;
+				const format = req.query.format;
+				const svg_include_id = req.query.svg_include_id;
+				const svg_simplify_stroke = req.query.svg_simplify_stroke;
+
+				let result = await this.__FigmaAPI.images(key, ids, version, scale, format, svg_include_id, svg_simplify_stroke);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/imageFills/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.imageFills(key);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/comments/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.comments(key);
+				
+				res.json(result);
+			});
+
+			app.post('/api/figma/comments/', async (req, res) => {
+				const key = req.query.key;
+				const message = req.query.message;
+				const vector = { x: req.query.x, y: req.query.y };
+
+				let result = await this.__FigmaAPI.postComment(key, message, vector);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/versions/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.versions(key);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/projects/', async (req, res) => {
+				const team_id = req.query.team_id;
+
+				let result = await this.__FigmaAPI.projects(team_id);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/projectFiles/', async (req, res) => {
+				const project_id = req.query.project_id;
+
+				let result = await this.__FigmaAPI.projectFiles(project_id);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/components/', async (req, res) => {
+				const team_id = req.query.team_id;
+				const page_size = req.query.page_size;
+				const cursor = req.query.cursor;
+
+				let result = await this.__FigmaAPI.components(team_id, page_size, cursor);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/component/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.component(key);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/styles/', async (req, res) => {
+				const team_id = req.query.team_id;
+				const page_size = req.query.page_size;
+				const cursor = req.query.cursor;
+
+				let result = await this.__FigmaAPI.styles(team_id, page_size, cursor);
+				
+				res.json(result);
+			});
+
+			app.get('/api/figma/style/', async (req, res) => {
+				const key = req.query.key;
+
+				let result = await this.__FigmaAPI.style(key);
+				
+				res.json(result);
+			});
+
 			// app.get('/fake-get', (req, res) => {
 			// 	const address = req.params.address;
 	
