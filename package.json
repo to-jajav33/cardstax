@@ -24,7 +24,7 @@
     "lerna": "^3.16.4",
     "mocha": "^6.2.0",
     "semantic-release": "^15.13.21",
-    "verdaccio": "^4.2.1"
+    "verdaccio": "^5.19.1"
   },
   "repository": {
     "type": "git",
