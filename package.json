@@ -21,9 +21,9 @@
     "commitizen": "^4.0.3",
     "cz-lerna-changelog": "^2.0.2",
     "husky": "^3.0.5",
-    "lerna": "^3.16.4",
+    "lerna": "^6.4.1",
     "mocha": "^6.2.0",
-    "semantic-release": "^15.13.21",
+    "semantic-release": "^20.1.0",
     "verdaccio": "^4.2.1"
   },
   "repository": {
